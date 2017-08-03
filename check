@@ -2,12 +2,27 @@
 
 original="$1"
 other="$2"
-default="$(dirname $original)/$(basename $original .cfg).ini"
-generated=${other:-$default}
 
-grep -v "#" "$original" | sort  > "$original.sorted"
-sort "$generated" > "$generated.sorted"
+function usage ()
+{
+	echo "Usage: check path/to/original/config.cfg" 
+}
 
-diff -d "$original.sorted" "$generated.sorted"
+function dothemagic ()
+{
+	default="$(dirname $original)/$(basename $original .cfg).ini"
+	generated=${other:-$default}
 
-rm {$original,$generated}.sorted
+	grep -v "#" "$original" | sort  > "$original.sorted"
+	sort "$generated" > "$generated.sorted"
+
+	diff -d "$original.sorted" "$generated.sorted"
+
+	rm {$original,$generated}.sorted
+}
+
+if [ -z $original ]; then
+	usage
+else
+	dothemagic
+fi
