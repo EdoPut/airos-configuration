@@ -1,0 +1,13 @@
+#! /usr/bin/env bash
+
+original="$1"
+other="$2"
+default="$(dirname $original)/$(basename $original .cfg).ini"
+generated=${other:-$default}
+
+grep -v "#" "$original" | sort  > "$original.sorted"
+sort "$generated" > "$generated.sorted"
+
+diff -d "$original.sorted" "$generated.sorted"
+
+rm {$original,$generated}.sorted
