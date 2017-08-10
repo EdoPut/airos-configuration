@@ -14,7 +14,7 @@ function dothemagic ()
 	generated=${other:-$default}
 
 	grep -v "#" "$original" | sort  > "$original.sorted"
-	sort "$generated" > "$generated.sorted"
+	grep -v "#" "$generated" | sort > "$generated.sorted"
 
 	diff -d "$original.sorted" "$generated.sorted"
 
